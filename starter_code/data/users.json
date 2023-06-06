@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Nick Arzner",
+    "email": "nick@block15.com",
+    "password": "hunter2"
+  },
+  {
+    "name": "Tori Lockwood",
+    "email": "tori@robnetts.com",
+    "password": "hunter2"
+  },
+  {
+    "name": "Joel Rea",
+    "email": "joel@lickspigot.com",
+    "password": "hunter2"
+  },
+  {
+    "name": "The Owners",
+    "email": "owners@firstalt.coop",
+    "password": "hunter2"
+  },
+  {
+    "name": "Kim Marchesi",
+    "email": "kim@localboyzhawaiiancafe.com",
+    "password": "hunter2"
+  },
+  {
+    "name": "William McCanless",
+    "email": "william@interzoneorganic1.com",
+    "password": "hunter2"
+  },
+  {
+    "name": "Paul Turner",
+    "email": "paul@darksidecinema.com",
+    "password": "hunter2"
+  },
+  {
+    "name": "Cody Utzman",
+    "email": "cody@bodhibakery.com",
+    "password": "hunter2"
+  },
+  {
+    "name": "Winco Employees",
+    "email": "employees@wincofoods.com",
+    "password": "hunter2"
+  },
+  {
+    "name": "Philip Wilson",
+    "email": "philib@bookbin.com",
+    "password": "hunter2"
+  },
+  {
+    "name": "Fred Meyer",
+    "email": "fred@fredmeyer.com",
+    "password": "hunter2"
+  },
+  {
+    "name": "Mike Easter",
+    "email": "mike@cyclotopia.com",
+    "password": "hunter2"
+  },
+  {
+    "name": "Casey Collett",
+    "email": "casey@oregoncoffeeandtea.com",
+    "password": "hunter2"
+  },
+  {
+    "name": "John Semadeni",
+    "email": "john@corvalliscycleryinc.com",
+    "password": "hunter2"
+  },
+  {
+    "name": "Alex Spaeth",
+    "email": "alex@spaethlumber.com",
+    "password": "hunter2"
+  },
+  {
+    "name": "Tristan James",
+    "email": "tristan@newmorningbakery.com",
+    "password": "hunter2"
+  }
+]

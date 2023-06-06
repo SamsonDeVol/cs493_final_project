@@ -1,0 +1,24 @@
+version: '3'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_DB=cs493 
+      - MYSQL_USER=sam
+      - MYSQL_PASSWORD=userpassword
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  db:
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=cs493
+      - MYSQL_USER=sam
+      - MYSQL_PASSWORD=userpassword
