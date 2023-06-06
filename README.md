@@ -10,3 +10,13 @@ The application for which you’ll write an API for this project is Tarpaulin, a
 The Tarpaulin API you implement must support all of the endpoints described in the Tarpaulin OpenAPI specification. Importantly, you are free to implement the endpoints described in the OpenAPI specification however you see fit. For example, you may use whatever database you want, and you may design your API architecture to meet your own needs.
 
 The OpenAPI specification linked above will provide most of the details of the API you’ll implement, but some more details are included below.
+
+## Running Locally
+
+This application was generated using the express application generator initialized with ```npx express-generator``` 
+
+Here is a list of the npm package dependencies
+
+```npm install cookie-parser```
+
+The applications default port is on localhost:3000
