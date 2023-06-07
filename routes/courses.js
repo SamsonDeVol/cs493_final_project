@@ -6,7 +6,49 @@ const { validateAgainstSchema } = require('../lib/validation');
 const { Course, CourseClientFields } = require('../models/course');
 const { User } = require('../models/user');
 
+/* 
+ * Route to return a list of all Courses.
+ * This list should be paginated. The Courses returned 
+ * should not contain the list of students in the Course or the 
+ * list of Assignments for the Course.
+ */ 
+router.get('/', async function(req, res) {
+  let page = parseInt(req.query.page) || 1
+  page = page < 1 ? 1 : page
+  const numPerPage = 10
+  const offset = (page - 1) * numPerPage
 
+  const result = await Course.findAndCountAll({
+    limit: numPerPage,
+    offset: offset
+  })
+
+  /*
+   * Generate HATEOAS links for surrounding pages.
+   */
+  const lastPage = Math.ceil(result.count / numPerPage)
+  const links = {}
+  if (page < lastPage) {
+    links.nextPage = `/courses?page=${page + 1}`
+    links.lastPage = `/courses?page=${lastPage}`
+  }
+  if (page > 1) {
+    links.prevPage = `/courses?page=${page - 1}`
+    links.firstPage = '/courses?page=1'
+  }
+
+  /*
+   * Construct and send response.
+   */
+  res.status(200).json({
+    courses: result.rows,
+    pageNumber: page,
+    totalPages: lastPage,
+    pageSize: numPerPage,
+    totalCount: result.count,
+    links: links
+  })
+});
 
 module.exports = router;
 
