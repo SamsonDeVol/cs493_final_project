@@ -50,14 +50,51 @@ router.get('/', async function(req, res) {
   })
 });
 
+/*
+ * Route to create a new Course.
+ * Creates a new Course with specified data and adds it to the
+ * application's database. Only an authenticated User with 'admin'
+ * role can create a new Course.
+ */
+router.post('/', requireAuthentication, async function (req, res) {
+  try {
+    const course = await Course.create(req.body, CourseClientFields)
+    res.status(201).send({ id: id })
+  } catch (e) {
+    if (e instanceof ValidationError) {
+      res.status(400).send({ error: e.message })
+    } else {
+      throw e
+    }
+  }
+});
+
+// // Route to create a new course.
+// router.post('/', async (req, res) => {
+//   if (validateAgainstSchema(req.body, courseSchema)) {
+//     try {
+//       const id = await insertNewCourse(req.body)
+//       res.status(201).json({
+//         id: id,
+//         links: {
+//           course: `/courses/${id}`
+//         }
+//       })
+//     } catch (err) {
+//       console.log("err", err)
+//       res.status(500).json({
+//         error: `Error inserting course into database ${err}`
+//       })
+//     }
+//   } else {
+//     res.status(400).json({
+//       error: "Request body is not a valid course object"
+//     })
+//   }
+// })
+
 module.exports = router;
 
-
-
-
-
-// exports.router = router
-// exports.businesses = businesses
 
 // // Route to create business table. 
 // router.post('/createBusinessesTable', async (req, res) => {
@@ -67,42 +104,6 @@ module.exports = router;
 //   } catch (err) {
 //     res.status(500).json({
 //       error: "Error creating businesses table (may already exist)"
-//     })
-//   }
-// })
-
-// // Route to return a list of businesses.
-// router.get('/', async (req, res) => {
-// try {
-//   const businessesPage = await getBusinessPage(parseInt(req.query.page) || 1)
-//   res.status(200).send(businessesPage)
-// } catch (err) {
-//   res.status(500).json({
-//     error: "Error fetching businesses list"
-//   })
-// }
-// })
-
-// // Route to create a new business.
-// router.post('/', async (req, res) => {
-//   if (validateAgainstSchema(req.body, businessSchema)) {
-//     try {
-//       const id = await insertNewBusiness(req.body)
-//       res.status(201).json({
-//         id: id,
-//         links: {
-//           business: `/businesses/${id}`
-//         }
-//       })
-//     } catch (err) {
-//       console.log("err", err)
-//       res.status(500).json({
-//         error: `Error inserting business into database ${err}`
-//       })
-//     }
-//   } else {
-//     res.status(400).json({
-//       error: "Request body is not a valid business object"
 //     })
 //   }
 // })
