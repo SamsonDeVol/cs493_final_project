@@ -1,20 +1,18 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('accessing the /courses route');
-});
+const { ValidationError } = require('sequelize');
+const { validateAgainstSchema } = require('../lib/validation');
+const { Course, CourseClientFields } = require('../models/course');
+const { User } = require('../models/user');
+
+
 
 module.exports = router;
 
 
 
 
-// const router = require('express').Router()
-// const { validateAgainstSchema } = require('../lib/validation')
-// const { businessSchema, createBusinessesTable, getBusinessPage, getBusinessById, insertNewBusiness, updateBusinessById, deleteBusinessById } = require('../models/business')
-// const businesses = require('../data/businesses')
 
 // exports.router = router
 // exports.businesses = businesses
