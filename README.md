@@ -33,17 +33,31 @@ docker run -d --name cs493_final_server            \
      --network cs493_final_network                 \
      -p "3306:3306"                                \
      -e "MYSQL_RANDOM_ROOT_PASSWORD=yes"           \
-     -e "MYSQL_DATABASE=${MYSQL_DATABASE}"      \
-     -e "MYSQL_USER=${MYSQL_USER}"              \
-     -e "MYSQL_PASSWORD=${MYSQL_PASSWORD}"             \
+     -e "MYSQL_DATABASE=${MYSQL_DATABASE}"         \
+     -e "MYSQL_USER=${MYSQL_USER}"                 \
+     -e "MYSQL_PASSWORD=${MYSQL_PASSWORD}"         \
      mysql
 ```
 4. Check to make sure the container is running using ```docker container ls```.
-5. Run the MySWL terminal monitor using the Docker image:
+5. Run the MySQL terminal monitor using the Docker image:
 ```
 docker run --rm -it                                \
      --network cs493_final_network                 \
      mysql                                         \
           mysql -h cs493_final_server -u cs493_final_user -p
 ```
-6. Create the tables 
+6. Once the MySQL terminal monitor is running, use the database you created in step 3 using ```mysql> USE ${MYSQL_DATABASE}```.
+7. Create the tables and insert data into the tables using the following example:
+```
+CREATE TABLE users (
+    id MEDIUMINT NOT NULL AUTO_INCREMENT KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    role VARCHAR(255) NOT NULL,
+);
+
+INSERT INTO users (name, email, role) VALUES
+    ('Leia Organa', 'organale@email.com', 'admin'),
+    ('Luke Skywalker', 'skywallu@email.com', 'instructor'),
+    ('Rey Skywalker', 'skywalre@email.com', 'student');
+```
