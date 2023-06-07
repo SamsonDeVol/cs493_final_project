@@ -20,3 +20,30 @@ Here is a list of the npm package dependencies
 ```npm install cookie-parser```
 
 The applications default port is on localhost:3000
+
+## Creation of the Database
+
+This application uses a MySQL database. The database was created using the following commands:
+
+1. Create a Docker image using ```docker pull mysql```.
+2. Create a Docker network using ```docker network create --driver bridge cs493_final_network```.
+3. Launch the Docker container:
+```
+docker run -d --name cs493_final_server            \
+     --network cs493_final_network                 \
+     -p "3306:3306"                                \
+     -e "MYSQL_RANDOM_ROOT_PASSWORD=yes"           \
+     -e "MYSQL_DATABASE=${MYSQL_DATABASE}"      \
+     -e "MYSQL_USER=${MYSQL_USER}"              \
+     -e "MYSQL_PASSWORD=${MYSQL_PASSWORD}"             \
+     mysql
+```
+4. Check to make sure the container is running using ```docker container ls```.
+5. Run the MySWL terminal monitor using the Docker image:
+```
+docker run --rm -it                                \
+     --network cs493_final_network                 \
+     mysql                                         \
+          mysql -h cs493_final_server -u cs493_final_user -p
+```
+6. Create the tables 
