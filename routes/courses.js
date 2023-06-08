@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+const router = require('express').Router();
+
 
 const { ValidationError } = require('sequelize');
 const { validateAgainstSchema } = require('../lib/validation');
@@ -56,18 +56,18 @@ router.get('/', async function(req, res) {
  * application's database. Only an authenticated User with 'admin'
  * role can create a new Course.
  */
-router.post('/', requireAuthentication, async function (req, res) {
-  try {
-    const course = await Course.create(req.body, CourseClientFields)
-    res.status(201).send({ id: id })
-  } catch (e) {
-    if (e instanceof ValidationError) {
-      res.status(400).send({ error: e.message })
-    } else {
-      throw e
-    }
-  }
-});
+// router.post('/', requireAuthentication, async function (req, res) {
+//   try {
+//     const course = await Course.create(req.body, CourseClientFields)
+//     res.status(201).send({ id: id })
+//   } catch (e) {
+//     if (e instanceof ValidationError) {
+//       res.status(400).send({ error: e.message })
+//     } else {
+//       throw e
+//     }
+//   }
+// });
 
 // // Route to create a new course.
 // router.post('/', async (req, res) => {
