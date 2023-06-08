@@ -1,5 +1,5 @@
-const mysqlPool = require('../lib/mysqlPool')
-const { extractValidFields } = require('../lib/validation')
+const { DataTypes } = require('sequelize')
+const sequelize = require('../lib/sequelize')
 
 const submissionSchema = {
     assignmentId: { required: true },
@@ -9,71 +9,72 @@ const submissionSchema = {
     file: { required: true }
 }
 
-async function createSubmissionsTable() {
-    await mysqlPool.query(`
-        CREATE TABLE submissions(
-        assignmentId MEDIUMINT NOT NULL,
-        studentId MEDIUMINT NOT NULL,
-        timestamp TIMESTAMPT NOT NULL,
-        grade: { required: false },
-        file: { required: true }
-        id MEDIUMINT NOT NULL AUTO_INCREMENT,
-        PRIMARY KEY (assignmentId),
-        INDEX idx_studentId (studentId)
-        )`
-    )
-}
+const Submission = sequelize.define('submissions', {
+    assignmentId: {type: DataTypes.INTEGER, allowNull: false},
+    studentId: {type: DataTypes.INTEGER, allowNull: false},
+    timestamp: {type: DataTypes.DATE, allowNull: false},
+    grade: { type: DataTypes.STRING, allowNull: false },
+    file: { type: DataTypes.BLOB, allowNull: false }
+})
 
-async function getSubmissionsCount() {
-    const [ count ] = await mysqlPool.query(
-        "SELECT COUNT(*) AS count FROM submissions"
-    )
-    return count
-}
+exports.Submission = Submission
 
-async function getSubmissionsPage(page) {
-    const count = await getSubmissionsCount()
-    const [ submissionPage ] = await mysqlPool.query(
-        "SELECT * FROM submissions"
-    )
-    const numPerPage = 1
-    const lastPage = Math.ceil(submissionPage.length / numPerPage)
-    page = page > lastPage ? lastPage : page
-    page = page < 1 ? 1 : page
+exports.SubmissionClientFields = [
+    'assignmentId',
+    'studentId',
+    'file'
+]
 
-    const start = (page - 1) * numPerPage
-    const end = start + numPerPage
-    const pageSubmissions = submissionPage.slice(start, end)
+// async function getSubmissionsCount() {
+//     const [ count ] = await mysqlPool.query(
+//         "SELECT COUNT(*) AS count FROM submissions"
+//     )
+//     return count
+// }
 
-    const links = {}
-    if (page < lastPage) {
-        links.nextPage = `/submissions?page=${page + 1}`
-        links.lastPage = `/submissions?page=${lastPage}`
-    }
-    if (page > 1) {
-        links.prevPage = `/submissions?page=${page - 1}`
-        links.firstPage = '/submissions?page=1'
-    }
+// async function getSubmissionsPage(page) {
+//     const count = await getSubmissionsCount()
+//     const [ submissionPage ] = await mysqlPool.query(
+//         "SELECT * FROM submissions"
+//     )
+//     const numPerPage = 1
+//     const lastPage = Math.ceil(submissionPage.length / numPerPage)
+//     page = page > lastPage ? lastPage : page
+//     page = page < 1 ? 1 : page
 
-    return {
-        submissions: pageSubmissions,
-        pageNumber: page,
-        totalPages: lastPage,
-        pageSize: numPerPage,
-        totalCount: count,
-        links: links
-    }
-}
+//     const start = (page - 1) * numPerPage
+//     const end = start + numPerPage
+//     const pageSubmissions = submissionPage.slice(start, end)
 
-async function getSubmissonByStudentId(studentId) {
-    const query = `SELECT * FROM submissions WHERE studentId=${studentId}`
-    const [ submission ] = await mysqlPool.query(query)
-    return submission
-}
+//     const links = {}
+//     if (page < lastPage) {
+//         links.nextPage = `/submissions?page=${page + 1}`
+//         links.lastPage = `/submissions?page=${lastPage}`
+//     }
+//     if (page > 1) {
+//         links.prevPage = `/submissions?page=${page - 1}`
+//         links.firstPage = '/submissions?page=1'
+//     }
+
+//     return {
+//         submissions: pageSubmissions,
+//         pageNumber: page,
+//         totalPages: lastPage,
+//         pageSize: numPerPage,
+//         totalCount: count,
+//         links: links
+//     }
+// }
+
+// async function getSubmissonByStudentId(studentId) {
+//     const query = `SELECT * FROM submissions WHERE studentId=${studentId}`
+//     const [ submission ] = await mysqlPool.query(query)
+//     return submission
+// }
 
 
-exports.submissionSchema = submissionSchema
-exports.createSubmissionsTable = createSubmissionsTable
-exports.getSubmissionCount = getSubmissionsCount
-exports.getSubmissionPage = getSubmissionsPage
-exports.getsubmissionByStudentId = getsubmissionByStudentId
+// exports.submissionSchema = submissionSchema
+// exports.createSubmissionsTable = createSubmissionsTable
+// exports.getSubmissionCount = getSubmissionsCount
+// exports.getSubmissionPage = getSubmissionsPage
+// exports.getsubmissionByStudentId = getsubmissionByStudentId
