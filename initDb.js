@@ -5,6 +5,7 @@
 
 const sequelize = require('./lib/sequelize')
 const { Course, CourseClientFields } = require('./models/course')
+const { Submission, SubmissionClientFields } = require('./models/submissions')
 
 const courseData = require('./data/courses.json')
 
