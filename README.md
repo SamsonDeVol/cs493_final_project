@@ -17,7 +17,12 @@ This application was generated using the express application generator initializ
 
 Here is a list of the npm package dependencies
 
-```npm install cookie-parser```
+```
+npm install cookie-parser
+npm install http-errors
+npm install sequelize
+npm install mysql2
+```
 
 The applications default port is on localhost:3000
 
@@ -47,17 +52,3 @@ docker run --rm -it                                \
           mysql -h cs493_final_server -u cs493_final_user -p
 ```
 6. Once the MySQL terminal monitor is running, use the database you created in step 3 using ```mysql> USE ${MYSQL_DATABASE}```.
-7. Create the tables and insert data into the tables using the following example:
-```
-CREATE TABLE users (
-    id MEDIUMINT NOT NULL AUTO_INCREMENT KEY,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    role VARCHAR(255) NOT NULL,
-);
-
-INSERT INTO users (name, email, role) VALUES
-    ('Leia Organa', 'organale@email.com', 'admin'),
-    ('Luke Skywalker', 'skywallu@email.com', 'instructor'),
-    ('Rey Skywalker', 'skywalre@email.com', 'student');
-```
