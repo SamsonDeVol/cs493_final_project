@@ -11,19 +11,14 @@ const Assignment = sequelize.define('assignment', {
 })
 
 /*
-* Set up one-to-many relationship between Course and User.
-*/
-// Course.hasMany(User, { foreignKey: { allowNull: false } })
-// User.belongsTo(Course)
-
-/*
- * Export an array containing the names of fields the client is allowed to set for a User.
+ * Export an array containing the names of fields the client is allowed to set for a Assignments.
  */
-exports.UserClientFields = [
+exports.AssignmentClientFields = [
     'id',
-    'name',
-    'email',
-    'role'
+    'courseId',
+    'title',
+    'points',
+    'due'
 ]
 
 // const mysqlPool = require('../lib/mysqlPool')
