@@ -71,6 +71,8 @@ router.post('/', async function (req, res) {
 
 /*
  * Route to fetch info about a specific business.
+ * Returns summary data about the Course, excluding the list of
+ * students enrolled in the course and the list of Assignments for the course.
  */
 router.get('/:id', async function (req, res, next) {
   const id = req.params.id
