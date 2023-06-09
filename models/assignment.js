@@ -1,3 +1,35 @@
+const { DataTypes } = require('sequelize')
+
+const sequelize = require('../lib/sequelize')
+const { Course } = require('./course')
+
+const Assignment = sequelize.define('assignment', {
+    id: { type: DataTypes.INTEGER, allowNull: false, primaryKey: true },
+    courseId: { type: DataTypes.INTEGER, allowNull: false },
+    title: { type: DataTypes.STRING, allowNull: false },
+    points: { type: DataTypes.INTEGER, allowNull: false },
+    due: { type: DataTypes.DATE, allowNull: false }
+})
+
+/*
+* Set up one-to-many relationship between Course and Assignments.
+*/
+Course.hasMany(Assignment, { foreignKey: { allowNull: false } })
+Assignment.belongsTo(Course)
+
+exports.Assignment = Assignment
+
+/*
+ * Export an array containing the names of fields the client is allowed to set for a Assignments.
+ */
+exports.AssignmentClientFields = [
+    'id',
+    'courseId',
+    'title',
+    'points',
+    'due'
+]
+
 // const mysqlPool = require('../lib/mysqlPool')
 // const { extractValidFields } = require('../lib/validation')
 
