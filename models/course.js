@@ -24,9 +24,9 @@ exports.Course = Course
  */
 exports.CourseClientFields = [
   'id',
-  'subject_code',
+  'subject',
   'number',
   'title',
   'term',
-  'instructor_id'
+  'instructorId'
 ]
