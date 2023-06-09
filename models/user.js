@@ -16,6 +16,8 @@ const User = sequelize.define('user', {
 // Course.hasMany(User, { foreignKey: { allowNull: false } })
 // User.belongsTo(Course)
 
+exports.User = User
+
 /*
  * Export an array containing the names of fields the client is allowed to set for a User.
  */
