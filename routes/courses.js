@@ -56,7 +56,7 @@ router.get('/', async function(req, res) {
  * application's database. Only an authenticated User with 'admin'
  * role can create a new Course.
  */
-router.post('/', requireAuthentication, async function (req, res) {
+router.post('/', async function (req, res) {
   try {
     const course = await Course.create(req.body, CourseClientFields)
     res.status(201).send({ id: id })
