@@ -1,27 +1,29 @@
 const { DataTypes } = require('sequelize')
-const sequelize = require('../lib/sequelize')
 
-const submissionSchema = {
-    assignmentId: { required: true },
-    studentId: { required: true },
-    timestamp: { required: true },
-    grade: { required: false },
-    file: { required: true }
-}
+const sequelize = require('../lib/sequelize')
+const { User } = require('./user')
+const { Assignment } = require('./assignment')
 
 const Submission = sequelize.define('submissions', {
     assignmentId: {type: DataTypes.INTEGER, allowNull: false},
     studentId: {type: DataTypes.INTEGER, allowNull: false},
     timestamp: {type: DataTypes.DATE, allowNull: false},
-    grade: { type: DataTypes.STRING, allowNull: false },
-    file: { type: DataTypes.BLOB, allowNull: false }
+    grade: { type: DataTypes.FLOAT, allowNull: true },
+    file: { type: DataTypes.STRING, allowNull: false }
 })
+
+Submission.belongsTo(User, { foreignKey: { allowNull: false } })
+Submission.belongsTo(Assignment, { foreignKey: { allowNull: false } })
+User.hasMany(Submission, { foreignKey: { allowNull: false } })
+Assignment.hasMany(Submission, { foreignKey: { allowNull: false } })
 
 exports.Submission = Submission
 
 exports.SubmissionClientFields = [
     'assignmentId',
     'studentId',
+    'timestamp',
+    'grade',
     'file'
 ]
 
