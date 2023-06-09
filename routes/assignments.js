@@ -51,12 +51,12 @@ router.get('/{id}/submissions', async function (req, res) {
   const lastPage = Math.ceil(result.count / numPerPage)
   const links = {}
   if (page < lastPage) {
-    links.nextPage = `/submissions?page=${page + 1}`
-    links.lastPage = `/submissions?page=${lastPage}`
+    links.nextPage = `/{id}/submissions?page=${page + 1}`
+    links.lastPage = `/{id}/submissions?page=${lastPage}`
   }
   if (page > 1) {
-    links.prevPage = `/submissions?page=${page - 1}`
-    links.firstPage = '/submissions?page=1'
+    links.prevPage = `/{id}/submissions?page=${page - 1}`
+    links.firstPage = '/{id}/submissions?page=1'
   }
 
   /*
