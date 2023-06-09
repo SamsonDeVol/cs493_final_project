@@ -17,7 +17,12 @@ This application was generated using the express application generator initializ
 
 Here is a list of the npm package dependencies
 
-```npm install cookie-parser```
+```
+npm install cookie-parser
+npm install http-errors
+npm install sequelize
+npm install mysql2
+```
 
 The applications default port is on localhost:3000
 
