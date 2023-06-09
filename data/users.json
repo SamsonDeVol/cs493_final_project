@@ -3,6 +3,7 @@
         "id": 1234,
         "name": "def not a cat",
         "email": "imahuman@gmail.com",
+        "password": "meow",
         "role": "admin"
     }
 ]
