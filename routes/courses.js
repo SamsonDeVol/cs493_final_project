@@ -69,29 +69,22 @@ router.post('/', async function (req, res) {
   }
 });
 
-// // Route to create a new course.
-// router.post('/', async (req, res) => {
-//   if (validateAgainstSchema(req.body, courseSchema)) {
-//     try {
-//       const id = await insertNewCourse(req.body)
-//       res.status(201).json({
-//         id: id,
-//         links: {
-//           course: `/courses/${id}`
-//         }
-//       })
-//     } catch (err) {
-//       console.log("err", err)
-//       res.status(500).json({
-//         error: `Error inserting course into database ${err}`
-//       })
-//     }
-//   } else {
-//     res.status(400).json({
-//       error: "Request body is not a valid course object"
-//     })
-//   }
-// })
+/*
+ * Route to fetch info about a specific business.
+ * Returns summary data about the Course, excluding the list of
+ * students enrolled in the course and the list of Assignments for the course.
+ */
+router.get('/:id', async function (req, res, next) {
+  const id = req.params.id
+  const course = await course.findByPk(id, {
+    // include: [ Photo, Review ]
+  })
+  if (course) {
+    res.status(200).send(course)
+  } else {
+    next()
+  }
+});
 
 module.exports = router;
 
