@@ -6,7 +6,8 @@ const User = sequelize.define('user', {
     id: { type: DataTypes.INTEGER, allowNull: false, primaryKey: true },
     name: { type: DataTypes.STRING, allowNull: false },
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
-    role: { type: DataTypes.STRING, allowNull: false }
+    password: { type: DataTypes.TEXT, allowNull: false },
+    role: { type: DataTypes.STRING, allowNull: false, enum: ['admin', 'instructor', 'student'], defaultValue: 'student' }
 })
 
 /*
@@ -22,5 +23,6 @@ exports.UserClientFields = [
     'id',
     'name',
     'email',
+    'password',
     'role'
 ]
