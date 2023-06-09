@@ -4,7 +4,7 @@ const sequelize = require('../lib/sequelize')
 const { User } = require('./user')
 
 const Course = sequelize.define('course', {
-  id: { type: DataTypes.INTEGER, allowNull: false },
+  id: { type: DataTypes.INTEGER, allowNull: false, primaryKey: true },
   subject_code: { type: DataTypes.STRING, allowNull: false },
   number: { type: DataTypes.STRING, allowNull: false },
   title: { type: DataTypes.STRING, allowNull: false },
@@ -15,8 +15,8 @@ const Course = sequelize.define('course', {
 /*
 * Set up one-to-many relationship between Course and User.
 */
-Course.hasMany(User, { foreignKey: { allowNull: false } })
-User.belongsTo(Course)
+// Course.hasMany(User, { foreignKey: { allowNull: false } })
+// User.belongsTo(Course)
 
 /*
  * Export an array containing the names of fields the client is allowed to set

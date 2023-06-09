@@ -1,11 +1,8 @@
-// var express = require('express');
-// var router = express.Router();
+const router = require('express').Router();
 
-const router = module.exports = require('express').Router();
-
-router.use('/users', require('./users').router);
-router.use('/courses', require('./courses').router);
-router.use('/assignments', require('./assignments').router);
+router.use('/users', require('./users'));
+router.use('/courses', require('./courses'));
+router.use('/assignments', require('./assignments'));
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
