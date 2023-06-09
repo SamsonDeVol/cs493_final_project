@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize')
 
 const sequelize = require('../lib/sequelize')
+const { Course } = require('./course')
 
 const Assignment = sequelize.define('assignment', {
     id: { type: DataTypes.INTEGER, allowNull: false, primaryKey: true },
@@ -9,6 +10,12 @@ const Assignment = sequelize.define('assignment', {
     points: { type: DataTypes.INTEGER, allowNull: false },
     due: { type: DataTypes.DATE, allowNull: false }
 })
+
+/*
+* Set up one-to-many relationship between Course and Assignments.
+*/
+Course.hasMany(Assignment, { foreignKey: { allowNull: false } })
+Assignment.belongsTo(Course)
 
 /*
  * Export an array containing the names of fields the client is allowed to set for a Assignments.
