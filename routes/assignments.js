@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+const multer = require('multer');
+const upload = multer({storage: multer.memoryStorage()});
 
 const { Submission, SubmissionClientFields } = require('../models/submission')
 
@@ -13,9 +15,15 @@ module.exports = router;
 /*
  * Route to create a new submission.
  */
-router.post('/{id}/submissions', async function (req, res, next) {
+router.post('/{id}/submissions', upload.single('file'), async function (req, res, next) {
   try {
-    const submission = await submission.create(req.body, SubmissionClientFields)
+    const submission = await submission.create({
+      'assignmentId': req.params.id,
+      'studentId': 0, //get from authentication
+      'grade': -1,
+      'file': req.file.buffer,
+      'fileType': req.file.mimetype
+    }, SubmissionClientFields)
     res.status(201).send({ id: submission.id })
   } catch (e) {
     if (e instanceof ValidationError) {
@@ -44,6 +52,15 @@ router.get('/{id}/submissions', async function (req, res) {
     limit: numPerPage,
     offset: offset
   })
+
+  // const [results] = await mysqlPool.query('SELECT image, mimetype FROM photos WHERE id = ?',
+  // id);
+  // if (results.length == 0) {
+  //   res.status(404).json({"Error": "id does not exist"});
+  // } else {
+  //   res.setHeader('Content-Type', results[0].mimetype);
+  //   res.send(results[0].image);
+  // }
 
   /*
    * Generate HATEOAS links for surrounding pages.
