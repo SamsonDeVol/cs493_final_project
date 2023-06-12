@@ -76,7 +76,7 @@ router.post('/', async function (req, res) {
  */
 router.get('/:id', async function (req, res, next) {
   const id = req.params.id
-  const course = await course.findByPk(id, {
+  const course = await Course.findByPk(id, {
     // include: [ Photo, Review ]
   })
   if (course) {
@@ -126,6 +126,27 @@ router.delete('/:id', async function (req, res, next) {
     } else {
       next()
     }
+  }
+});
+
+/*
+ * GET /courses/{id}/students
+ * Returns a list containing the User IDs of all
+ * students currently enrolled in the Course. 
+ * Only an authenticated User with 'admin' role or an 
+ * authenticated 'instructor' User whose ID matches the 
+ * instructorId of the Course can fetch the list of 
+ * enrolled students.
+ *
+ */
+router.get('/:id/students', async function (req, res, next) {
+  const id = req.params.id
+  const course = await Course.findByPk(id)
+  const user = await User.findByPk(id)
+  if (course && user == "student") {
+    res.status(200).send(course)
+  } else {
+    next()
   }
 });
 
