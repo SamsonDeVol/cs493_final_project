@@ -141,10 +141,9 @@ router.delete('/:id', async function (req, res, next) {
  */
 router.get('/:id/students', async function (req, res, next) {
   const id = req.params.id
-  const course = await Course.findByPk(id)
-  const user = await User.findByPk(id)
-  if (course && user == "student") {
-    res.status(200).send(course)
+  const user = await User.findAll({ where: {courseId: id}})
+  if (user == "student") {
+    res.status(200).send(user)
   } else {
     next()
   }
