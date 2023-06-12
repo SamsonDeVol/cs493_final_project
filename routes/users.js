@@ -1,17 +1,13 @@
 const router = require('express').Router();
 
-
-
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('accessing the /users route');
 });
 
-
+const { generateAuthToken } = require('../lib/auth')
 const { ValidationError } = require('sequelize');
-const { validateAgainstSchema } = require('../lib/validation');
-const { Course, CourseClientFields } = require('../models/course');
-const { User, UserClientFields } = require('../models/user');
+const { User, UserClientFields, validateUser, hashAndSaltPassword } = require('../models/user');
 
 /* 
  * Route to return a list of all Courses.
@@ -22,9 +18,10 @@ const { User, UserClientFields } = require('../models/user');
 
 
 /* POST - create a new user */
-
 router.post('/', async function (req, res) {
   try {
+    const securePassword = await hashAndSaltPassword(req.body.password)
+    req.body.password = securePassword
     const user = await User.create(req.body, UserClientFields)
     res.status(201).send({ id: user.id })
   } catch (e) {
@@ -36,17 +33,36 @@ router.post('/', async function (req, res) {
   }
 });
 
-
 /* POST - login a user */
 router.post('/login', async function(req, res) {
-  res.status(200).send('welcome to login')
-})
+  if (req.body && req.body.email && req.body.password) {
+    try {
+      const user = await User.findOne({ where: { email: `${req.body.email}` } });
+      const authenticated = await validateUser(user, req.body.password);
+      if (authenticated) {
+        const token = generateAuthToken(req.body.userId);
+        res.status(200).send({
+          token: token
+        });
+      } else {
+        res.status(401).send({
+          error: "Invalid authentication credentials."
+        });
+      }
+    } catch (err) {
+      res.status(500).send({
+        error: "Error logging in. Try again later."
+      });
+    }
+  } else {
+    res.status(400).send({
+      error: "Request body was invalid."
+    });
+  }
+});
 
 /* GET - get a user by id */ 
-
 router.get('/:id', async function(req, res) {
-  console.log("id", req.params.id)
-
   const id = req.params.id
   const user = await User.findByPk(id)
   if (user) {

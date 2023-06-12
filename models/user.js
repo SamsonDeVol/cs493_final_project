@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize')
 
 const sequelize = require('../lib/sequelize')
+const bcrypt = require('bcryptjs');
 
 const User = sequelize.define('user', {
     id: { type: DataTypes.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true },
@@ -13,8 +14,6 @@ const User = sequelize.define('user', {
 /*
 * Set up one-to-many relationship between Course and User.
 */
-// Course.hasMany(User, { foreignKey: { allowNull: false } })
-// User.belongsTo(Course)
 
 exports.User = User
 
@@ -28,3 +27,10 @@ exports.UserClientFields = [
     'password',
     'role'
 ]
+
+exports.hashAndSaltPassword = async function (password) {
+    return await bcrypt.hash(password, 8)
+}
+exports.validateUser = async function (user, password) {
+    return !!user && await bcrypt.compare(password, user.password);
+}

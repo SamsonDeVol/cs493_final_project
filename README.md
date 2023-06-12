@@ -22,6 +22,8 @@ npm install cookie-parser
 npm install http-errors
 npm install sequelize
 npm install mysql2
+npm install jsonwebtoken
+npm install bcryptjs
 ```
 
 The applications default port is on localhost:3000
