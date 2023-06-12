@@ -46,6 +46,18 @@ router.post('/login', async function(req, res) {
 
 router.get('/:id', async function(req, res) {
   console.log("id", req.params.id)
-  res.status(200).send(`looking for user with id ${req.params.id}`)
+
+  const id = req.params.id
+  const user = await User.findByPk(id)
+  if (user) {
+    res.status(200).json({
+      "name": user.name,
+      "email": user.email,
+      "role": user.role
+    })
+  } else {
+    res.status(400).send(`user with id: ${id} not found`)
+  }
 });
+
 module.exports = router;
