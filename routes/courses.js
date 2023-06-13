@@ -86,6 +86,49 @@ router.get('/:id', async function (req, res, next) {
   }
 });
 
+/*
+ * Route to update a course.
+ * Performs a partial update on the data for the Course.
+ * Note that enrolled students and assignments cannot be modified
+ * via this endpoint. Only an authenticated User with 'admin' role 
+ * or an authenticated 'instructor' User whose ID matches the instructorId
+ * of the Course can update Course information.
+ */
+router.patch('/:id', async function (req, res, next) {
+  const id = req.params.id
+  const result = await Course.update(req.body, {
+    where: { id: id },
+    fields: CourseClientFields
+  })
+  if (result[0] > 0) {
+    res.status(200).send()
+  } else {
+    next()
+  }
+});
+
+/*
+ * Route to delete a business.
+ * Completely removes the data for the specified Course,
+ * including all enrolled students, all Assignments, etc.
+ * Only an authenticated User with 'admin' role can remove a Course.
+ */
+router.delete('/:id', async function (req, res, next) {
+  const id = req.params.id
+  const result = await Course.destroy({ where: { id: id}})
+  if (req.user !== req.params.id) {
+    res.status(403).json({
+      error: "Unauthorized to access the specified resource"
+    });
+  } else {
+    if (result > 0) {
+      res.status(204).send()
+    } else {
+      next()
+    }
+  }
+});
+
 module.exports = router;
 
 
@@ -136,21 +179,4 @@ module.exports = router;
 //     })
 //   }
   
-// })
-
-// // Route to delete a business.
-// router.delete('/:businessid', async function (req, res, next) {
-//   try {
-//     const deleteSuccessful = await deleteBusinessById(req.params.businessid)
-
-//     if (deleteSuccessful) {
-//             res.status(204).end()
-//     } else {
-//         next()
-//     }
-// } catch (err) {
-//     res.status(500).send({
-//         error: "Unable to delete business."
-//     })
-// }
 // })
