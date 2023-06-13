@@ -54,3 +54,6 @@ docker run --rm -it                                \
           mysql -h cs493_final_server -u cs493_final_user -p
 ```
 6. Once the MySQL terminal monitor is running, use the database you created in step 3 using ```mysql> USE ${MYSQL_DATABASE}```.
+7. In a separate terminal and while the MySQL terminal is still running, initialize the database using ```npm run initdb```. This will populate the database with the tables and data needed for the application.
+8. Start the package using ```npm start```.
+
