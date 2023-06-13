@@ -5,9 +5,9 @@ router.get('/', function(req, res, next) {
   res.send('accessing the /users route');
 });
 
-const { generateAuthToken } = require('../lib/auth')
+const { generateAuthToken, validateUser, hashAndSaltPassword } = require('../lib/auth')
 const { ValidationError } = require('sequelize');
-const { User, UserClientFields, validateUser, hashAndSaltPassword } = require('../models/user');
+const { User, UserClientFields } = require('../models/user');
 
 /* 
  * Route to return a list of all Courses.

@@ -1,7 +1,7 @@
-const { DataTypes } = require('sequelize')
-
 const sequelize = require('../lib/sequelize')
-const bcrypt = require('bcryptjs');
+
+const { DataTypes } = require('sequelize')
+const { Submission } = require('./submission')
 
 const User = sequelize.define('user', {
     id: { type: DataTypes.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true },
@@ -10,12 +10,13 @@ const User = sequelize.define('user', {
     password: { type: DataTypes.TEXT, allowNull: false },
     role: { type: DataTypes.STRING, allowNull: false, enum: ['admin', 'instructor', 'student'], defaultValue: 'student' }
 })
+exports.User = User
 
 /*
-* Set up one-to-many relationship between Course and User.
+* Set up one-to-many relationship between User and Submission.
 */
-
-exports.User = User
+User.hasMany(Submission, { foreignKey: 'studentId' })
+Submission.belongsTo(User)
 
 /*
  * Export an array containing the names of fields the client is allowed to set for a User.
@@ -27,10 +28,3 @@ exports.UserClientFields = [
     'password',
     'role'
 ]
-
-exports.hashAndSaltPassword = async function (password) {
-    return await bcrypt.hash(password, 8)
-}
-exports.validateUser = async function (user, password) {
-    return !!user && await bcrypt.compare(password, user.password);
-}
