@@ -3,28 +3,23 @@ var router = express.Router();
 const multer = require('multer');
 const upload = multer({storage: multer.memoryStorage()});
 
+const { Assignment, AssignmentClientFields } = require('../models/assignment')
 const { Submission, SubmissionClientFields } = require('../models/submission')
 
-/* GET users listing. */
+module.exports = router;
+
+/* GET assignment listing. */
 router.get('/', function(req, res, next) {
   res.send('accessing the /assignments route');
 });
 
-module.exports = router;
-
 /*
- * Route to create a new submission.
+ * Route to create a new assignment.
  */
-router.post('/{id}/submissions', upload.single('file'), async function (req, res, next) {
+router.post('/', async function (req, res, next) {
   try {
-    const submission = await submission.create({
-      'assignmentId': req.params.id,
-      'studentId': 0, //get from authentication
-      'grade': -1,
-      'file': req.file.buffer,
-      'fileType': req.file.mimetype
-    }, SubmissionClientFields)
-    res.status(201).send({ id: submission.id })
+    const assignment = await Assignment.create(req.body, AssignmentClientFields)
+    res.status(201).send({ id: assignment.id })
   } catch (e) {
     if (e instanceof ValidationError) {
       res.status(400).send({ error: e.message })
@@ -34,9 +29,50 @@ router.post('/{id}/submissions', upload.single('file'), async function (req, res
   }
 })
 
+/*
+ *  Fetch data about a specific Assignment.
+ */
+router.get('/id', async function (req, res) {
+  const assignment = await Assignment.findByPk(id)
+  if (assignment) {
+    res.status(200).send(assignment)
+  } else {
+    next()
+  }
+
+})
 
 /*
- * Route to return a list of submissions.
+ *  Update data for a specific Assignment.
+ */
+router.patch('/id', async function (req, res) {
+  const assignmentId = req.params.assignmentId
+  const result = await Assignment.update(req.body, {
+    where: { id: assignmentId },
+    fields: AssignmentClientFields
+  })
+  if (result[0] > 0) {
+    res.status(204).send()
+  } else {
+    next()
+  }
+})
+
+/*
+ *  Remove a specific Assignment from the database.
+ */
+router.delete('/{id}', async function (req, res) {
+  const assignmentId = req.params.assignmentId
+  const result = await Assignment.destroy({ where: { id: assignmentId }})
+  if (result > 0) {
+    res.status(204).send()
+  } else {
+    next()
+  }
+})
+
+/*
+ * Route to return a list of submissions for an assignment.
  */
 router.get('/{id}/submissions', async function (req, res) {
   /*
@@ -52,15 +88,6 @@ router.get('/{id}/submissions', async function (req, res) {
     limit: numPerPage,
     offset: offset
   })
-
-  // const [results] = await mysqlPool.query('SELECT image, mimetype FROM photos WHERE id = ?',
-  // id);
-  // if (results.length == 0) {
-  //   res.status(404).json({"Error": "id does not exist"});
-  // } else {
-  //   res.setHeader('Content-Type', results[0].mimetype);
-  //   res.send(results[0].image);
-  // }
 
   /*
    * Generate HATEOAS links for surrounding pages.
@@ -89,5 +116,24 @@ router.get('/{id}/submissions', async function (req, res) {
   })
 })
 
-
-
+/*
+ * Route to create a new submission.
+ */
+router.post('/{id}/submissions', upload.single('file'), async function (req, res, next) {
+  try {
+    const submission = await submission.create({
+      'assignmentId': req.params.id,
+      'studentId': 0, //get from authentication
+      'grade': -1,
+      'file': req.file.buffer,
+      'fileType': req.file.mimetype
+    }, SubmissionClientFields)
+    res.status(201).send({ id: submission.id })
+  } catch (e) {
+    if (e instanceof ValidationError) {
+      res.status(400).send({ error: e.message })
+    } else {
+      throw e
+    }
+  }
+})
