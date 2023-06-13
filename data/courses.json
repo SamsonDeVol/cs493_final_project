@@ -4,128 +4,112 @@
       "subject": "CS",
       "number": "493",
       "title": "Cloud Application Development",
-      "term": "sp23",
-      "instructorId": 123
+      "term": "sp23"
     },
     {
       "id": 2,
       "subject": "CS",
       "number": "461",
       "title": "Capstone",
-      "term": "f22",
-      "instructorId": 120
+      "term": "f22"
     },
     {
       "id": 3,
       "subject": "CS",
       "number": "462",
       "title": "Capstone",
-      "term": "w23",
-      "instructorId": 120
+      "term": "w23"
     },
     {
       "id": 4,
       "subject": "CS",
       "number": "463",
       "title": "Capstone",
-      "term": "sp23",
-      "instructorId": 120
+      "term": "sp23"
     },
     {
       "id": 5,
       "subject": "CS",
       "number": "290",
       "title": "Web Development",
-      "term": "f20",
-      "instructorId": 90
+      "term": "f20"
     },
     {
       "id": 6,
       "subject": "SE",
       "number": "201",
       "title": "Software Development I",
-      "term": "sp21",
-      "instructorId": 90
+      "term": "sp21"
     },
     {
       "id": 7,
       "subject": "CS",
       "number": "361",
       "title": "Software Engineering I",
-      "term": "f21",
-      "instructorId": 60
+      "term": "f21"
     },
     {
       "id": 8,
       "subject": "CS",
       "number": "362",
       "title": "Software Engineering II",
-      "term": "w22",
-      "instructorId": 60
+      "term": "w22"
     },
     {
       "id": 9,
       "subject": "SE",
       "number": "303",
       "title": "Software Engineering III",
-      "term": "sp22",
-      "instructorId": 60
+      "term": "sp22"
     },
     {
       "id": 10,
       "subject": "CS",
       "number": "344",
       "title": "Operating Systems I",
-      "term": "w21",
-      "instructorId": 99
+      "term": "w21"
     },
     {
       "id": 11,
       "subject": "CS",
       "number": "444",
       "title": "Operating Systems II",
-      "term": "sp21",
-      "instructorId": 99
+      "term": "sp21"
     },
     {
       "id": 12,
       "subject": "CS",
       "number": "381",
       "title": "Programming Language Fundamentals",
-      "term": "sp21",
-      "instructorId": 11
+      "term": "sp21"
     },
     {
       "id": 13,
       "subject": "CS",
       "number": "434",
       "title": "Machine Learning & Data Mining",
-      "term": "sp22",
-      "instructorId": 11
+      "term": "sp22"
     },
     {
       "id": 14,
       "subject": "CS",
       "number": "340",
       "title": "Introduction to Databases",
-      "term": "w22",
-      "instructorId": 65
+      "term": "w22"
     },
     {
       "id": 15,
       "subject": "CS",
       "number": "475",
       "title": "Intro To Parallel Programming",
-      "term": "sp22",
-      "instructorId": 300
+      "term": "sp22"
     },
     {
       "id": 16,
       "subject": "CS",
       "number": "478",
       "title": "Network Security",
-      "term": "w22",
-      "instructorId": 321
+      "term": "w22"
     }
   ]
   

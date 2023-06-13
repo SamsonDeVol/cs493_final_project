@@ -1,8 +1,6 @@
-const { DataTypes } = require('sequelize')
-
 const sequelize = require('../lib/sequelize')
-const { User } = require('./user')
-const { Assignment } = require('./assignment')
+
+const { DataTypes } = require('sequelize')
 
 const Submission = sequelize.define('submissions', {
     id: { type: DataTypes.INTEGER, allowNull: false, autoIncrement: true, primaryKey: true },
@@ -13,12 +11,6 @@ const Submission = sequelize.define('submissions', {
     file: { type: DataTypes.BLOB, length: "medium", allowNull: false },
     fileType: { type: DataTypes.STRING, allowNull: false }
 })
-
-Submission.belongsTo(User, { foreignKey: { allowNull: false } })
-Submission.belongsTo(Assignment, { foreignKey: { allowNull: false } })
-User.hasMany(Submission, { foreignKey: { allowNull: false } })
-Assignment.hasMany(Submission, { foreignKey: { allowNull: false } })
-
 exports.Submission = Submission
 
 exports.SubmissionClientFields = [
