@@ -28,18 +28,19 @@ const { Assignment, AssignmentClientFields } = require('../models/assignment')
 
 module.exports = router;
 
-/* GET assignment listing. */
-router.get('/', function(req, res, next) {
-  res.send('accessing the /assignments route');
-});
-
 /*
  * Route to create a new assignment.
  */
-router.post('/', async function (req, res, next) {
+router.post('/', requireAuthentication, async function (req, res, next) {
   try {
     const assignment = await Assignment.create(req.body, AssignmentClientFields)
-    res.status(201).send({ id: assignment.id })
+    const course = await Course.findByPk(assignment.courseId)
+    const instructor = await User.findByPk(course.instructorId)
+    if(req.role == 'admin' || req.user == instructor.id) {
+      res.status(201).send({ id: assignment.id })
+    } else {
+      res.status(403).send("The request was not made by an authenticated User")
+    }
   } catch (e) {
     if (e instanceof ValidationError) {
       res.status(400).send({ error: e.message })
@@ -121,6 +122,7 @@ router.get('/submissions/:id/download', requireAuthentication, async function (r
     res.status(400).send("error downloading file.")
   }  
 })
+
 /*
  * Route to return a list of submissions for an assignment.
  */
