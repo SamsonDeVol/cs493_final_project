@@ -4,17 +4,19 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-	  "initdb": "node initDb.js"
+    "initdb": "node initDb.js"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "jsonwebtoken": "^9.0.0",
     "morgan": "~1.9.1",
     "multer": "^1.4.5-lts.1",
-    "mysql2": "^3.3.3",
+    "mysql2": "^3.3.5",
     "sequelize": "^6.32.0"
   }
 }
