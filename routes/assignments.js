@@ -84,11 +84,13 @@ router.delete('/:id', async function (req, res) {
 /*
  * Route to return a list of submissions for an assignment.
  */
-router.get('/{id}/submissions', async function (req, res) {
+router.get('/:id/submissions', async function (req, res) {
   /*
    * Compute page number based on optional query string parameter `page`.
    * Make sure page is within allowed bounds.
    */
+  console.log(req.params.id)
+  const id = req.params.id
   let page = parseInt(req.query.page) || 1
   page = page < 1 ? 1 : page
   const numPerPage = 10
@@ -105,12 +107,12 @@ router.get('/{id}/submissions', async function (req, res) {
   const lastPage = Math.ceil(result.count / numPerPage)
   const links = {}
   if (page < lastPage) {
-    links.nextPage = `/{id}/submissions?page=${page + 1}`
-    links.lastPage = `/{id}/submissions?page=${lastPage}`
+    links.lastPage = `/${id}/submissions?page=${lastPage}`
+    links.nextPage = `/${id}/submissions?page=${page + 1}`
   }
   if (page > 1) {
-    links.prevPage = `/{id}/submissions?page=${page - 1}`
-    links.firstPage = '/{id}/submissions?page=1'
+    links.prevPage = `/${id}/submissions?page=${page - 1}`
+    links.firstPage = `/${id}/submissions?page=1`
   }
 
   /*
@@ -129,7 +131,8 @@ router.get('/{id}/submissions', async function (req, res) {
 /*
  * Route to create a new submission.
  */
-router.post('/{id}/submissions', upload.single('file'), async function (req, res, next) {
+router.post('/:id/submissions', upload.single('file'), async function (req, res, next) {
+  console.log("req stuff", req)
   try {
     const submission = await submission.create({
       'assignmentId': req.params.id,
