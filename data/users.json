@@ -54,5 +54,12 @@
         "email": "student3@gmail.com",
         "password": "meow",
         "role": "student"
+    },
+    {
+        "id": 9,
+        "name": "Bengal Cat",
+        "email": "student4@gmail.com",
+        "password": "meow",
+        "role": "student"
     }
 ]
