@@ -148,8 +148,6 @@ router.get('/:id/submissions', requireAuthentication, async function (req, res) 
         offset: offset
       })
 
-      console.log("res: ", result)
-    
       /*
       * Generate HATEOAS links for surrounding pages.
       */
@@ -169,14 +167,9 @@ router.get('/:id/submissions', requireAuthentication, async function (req, res) 
       * Construct and send response.
       */
       for (const subIndex in result.rows) {
-        // result.row[subIndex].downloadLink = '/assignment'
-        console.log("submission id", result.rows[subIndex]);
         result.rows[subIndex].dataValues.downloadLink = `/assignments/submissions/${result.rows[subIndex].id}/download`
-
       }
       
-      console.log("result", result.rows)
-
       res.status(200).json({
         submissions: result.rows,
         pageNumber: page,
@@ -197,8 +190,6 @@ router.get('/:id/submissions', requireAuthentication, async function (req, res) 
  * Route to create a new submission.
  */
 router.post('/:id/submissions', requireAuthentication, upload.single('file'), async function (req, res, next) {
-  console.log("req stuff", req.file.mimetype)
-  console.log(" req file path", req.file.path)
   try {
     const submission = await Submission.create({
       'assignmentId': req.params.id,
