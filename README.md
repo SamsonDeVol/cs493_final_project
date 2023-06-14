@@ -57,6 +57,10 @@ docker run --rm -it                                \
 7. In a separate terminal and while the MySQL terminal is still running, initialize the database using ```MYSQL_DB=[INSERT DATABASE] MYSQL_USER=[INSERT USER] MYSQL_PASSWORD=[INSERT PASSWORD] npm run initdb```. This will populate the database with the tables and data needed for the application.
 8. Start the package using ```MYSQL_DB=[INSERT DATABASE] MYSQL_USER=[INSERT USER] MYSQL_PASSWORD=[INSERT PASSWORD] npm start```.
 
+## Creation of redis
+
+This application uses redis to rate limit. To run this container run the command ```docker run -d --name redis-server -p 6379:6379 redis:latest```
+
 ## Using Docker Compose
 
 This application can also be run using Docker Compose. The file can be used to create the Docker image and run the application using the following command:
