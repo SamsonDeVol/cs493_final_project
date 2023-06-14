@@ -5,6 +5,7 @@ const { ValidationError } = require('sequelize');
 const { validateAgainstSchema } = require('../lib/validation');
 const { Course, CourseClientFields } = require('../models/course');
 const { User } = require('../models/user');
+const { Assignment } = require('../models/assignment');
 
 /* 
  * Route to return a list of all Courses.
@@ -127,6 +128,19 @@ router.delete('/:id', async function (req, res, next) {
       next()
     }
   }
+});
+
+/*
+ * Route to fetch a list of the Assignments for the Course.
+ * Returns a list containing the Assignment IDs of all
+ * Assignments for the Course.
+ */
+router.get('/:id/assignments', async function (req, res) {
+  const courseId = req.params.id
+  const courseAssignments = await Assignment.findAll({ where: {courseId: courseId}})
+  res.status(200).json({
+    results: courseAssignments
+  })
 });
 
 module.exports = router;
