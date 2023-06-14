@@ -137,27 +137,33 @@ router.delete('/:id', async function (req, res, next) {
  * enrolled students.
  */
 router.get('/:id/students', async function (req, res) {
-  const userId = req.params.userId
-  const userCourses = await Course.findAll({ where: {userId: userId}})
+  const courseId = req.params.id
+  const courseStudents = await Course.findAll({ where: {courseId: courseId}})
   res.status(200).json({
-    students: userCourses
+    students: courseStudents
   })
 });
 
-// /*
-//  * Route to update enrollment for a Course.
-//  * Enrolls and/or unenrolls students from a Course. 
-//  * Only an authenticated User with 'admin' role or an authenticated 
-//  * 'instructor' User whose ID matches the instructorId of the Course 
-//  * can update the students enrolled in the Course.
-//  */
-// router.post('/:id/students', async function (req, res) {
-//   const userId = req.params.userId
-//   const userCourses = await Course.findAll({ where: {userId: userId}})
-//   res.status(200).json({
-//     students: userCourses
-//   })
-// });
+/*
+ * Route to update enrollment for a Course.
+ * Enrolls and/or unenrolls students from a Course. 
+ * Only an authenticated User with 'admin' role or an authenticated 
+ * 'instructor' User whose ID matches the instructorId of the Course 
+ * can update the students enrolled in the Course.
+ */
+router.post('/:id/students', async function (req, res) {
+  try {
+    const userId = req.params.id
+    const course = await Course.create(req.body, CourseClientFields)
+    res.status(200).send({ id: userId, add: req.body.add, remove: req.body.remove })
+  } catch (e) {
+    if (e instanceof ValidationError) {
+      res.status(400).send({ error: e.message })
+    } else {
+      throw e
+    }
+  }
+});
 
 // /*
 //  * Route to fetch a CSV file containing list of the students enrolled in the Course.
