@@ -28,7 +28,7 @@ npm install bcryptjs
 
 The applications default port is on localhost:3000
 
-## Creation of the Database
+## Creation of the Database and Tables
 
 This application uses a MySQL database. The database was created using the following commands:
 
@@ -40,9 +40,9 @@ docker run -d --name cs493_final_server            \
      --network cs493_final_network                 \
      -p "3306:3306"                                \
      -e "MYSQL_RANDOM_ROOT_PASSWORD=yes"           \
-     -e "MYSQL_DATABASE=${MYSQL_DATABASE}"         \
-     -e "MYSQL_USER=${MYSQL_USER}"                 \
-     -e "MYSQL_PASSWORD=${MYSQL_PASSWORD}"         \
+     -e "MYSQL_DATABASE=[INSERT DATABASE]"         \
+     -e "MYSQL_USER=[INSERT USER]"                 \
+     -e "MYSQL_PASSWORD=[INSERT PASSWORD]"         \
      mysql
 ```
 4. Check to make sure the container is running using ```docker container ls```.
@@ -51,9 +51,15 @@ docker run -d --name cs493_final_server            \
 docker run --rm -it                                \
      --network cs493_final_network                 \
      mysql                                         \
-          mysql -h cs493_final_server -u cs493_final_user -p
+          mysql -h cs493_final_server -u [INSERT USER] -p
 ```
-6. Once the MySQL terminal monitor is running, use the database you created in step 3 using ```mysql> USE ${MYSQL_DATABASE}```.
-7. In a separate terminal and while the MySQL terminal is still running, initialize the database using ```MYSQL_DB=${MYSQL_DATABASE} MYSQL_USER=${MYSQL_USER} MYSQL_PASSWORD=${MYSQL_PASSWORD} npm run initdb```. This will populate the database with the tables and data needed for the application.
-8. Start the package using ```MYSQL_DB=${MYSQL_DATABASE} MYSQL_USER=${MYSQL_USER} MYSQL_PASSWORD=${MYSQL_PASSWORD} npm start```.
+6. Once the MySQL terminal monitor is running, use the database you created in step 3 using ```mysql> USE [INSERT DATABASE]```.
+7. In a separate terminal and while the MySQL terminal is still running, initialize the database using ```MYSQL_DB=[INSERT DATABASE] MYSQL_USER=[INSERT USER] MYSQL_PASSWORD=[INSERT PASSWORD] npm run initdb```. This will populate the database with the tables and data needed for the application.
+8. Start the package using ```MYSQL_DB=[INSERT DATABASE] MYSQL_USER=[INSERT USER] MYSQL_PASSWORD=[INSERT PASSWORD] npm start```.
 
+## Using Docker Compose
+
+This application can also be run using Docker Compose. The file can be used to create the Docker image and run the application using the following command:
+```
+docker compose up
+```
