@@ -141,6 +141,7 @@ router.get('/:id/assignments', async function (req, res) {
   })
 });
 
+/*
  * Route to fetch a list of the students enrolled in the Course.
  * Returns a list containing the User IDs of all
  * students currently enrolled in the Course. 
