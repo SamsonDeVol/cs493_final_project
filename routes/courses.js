@@ -57,7 +57,7 @@ router.get('/', async function(req, res) {
  * application's database. Only an authenticated User with 'admin'
  * role can create a new Course.
  */
-router.post('/', async function (req, res) {
+router.post('/', requireAuthentication, async function (req, res) {
   try {
     const course = await Course.create(req.body, CourseClientFields)
     res.status(201).send({ id: id })
@@ -93,16 +93,18 @@ router.get('/:id', async function (req, res, next) {
  * or an authenticated 'instructor' User whose ID matches the instructorId
  * of the Course can update Course information.
  */
-router.patch('/:id', async function (req, res, next) {
-  const id = req.params.id
-  const result = await Course.update(req.body, {
-    where: { id: id },
-    fields: CourseClientFields
-  })
-  if (result[0] > 0) {
-    res.status(200).send()
-  } else {
-    next()
+router.patch('/:id', requireAuthentication, async function (req, res, next) {
+  if (req.role == 'admin' || req.user == instructor.id) {
+    const id = req.params.id
+    const result = await Course.update(req.body, {
+      where: { id: id },
+      fields: CourseClientFields
+    })
+    if (result[0] > 0) {
+      res.status(200).send()
+    } else {
+      next()
+    }
   }
 });
 
@@ -112,10 +114,10 @@ router.patch('/:id', async function (req, res, next) {
  * including all enrolled students, all Assignments, etc.
  * Only an authenticated User with 'admin' role can remove a Course.
  */
-router.delete('/:id', async function (req, res, next) {
+router.delete('/:id', requireAuthentication, async function (req, res, next) {
   const id = req.params.id
   const result = await Course.destroy({ where: { id: id }})
-  if (req.user !== req.params.id) {
+  if (req.role !== 'admin') {
     res.status(403).json({
       error: "Unauthorized to access the specified resource"
     });
@@ -129,19 +131,6 @@ router.delete('/:id', async function (req, res, next) {
 });
 
 /*
- * Route to fetch a list of the Assignments for the Course.
- * Returns a list containing the Assignment IDs of all
- * Assignments for the Course.
- */
-router.get('/:id/assignments', async function (req, res) {
-  const courseId = req.params.id
-  const courseAssignments = await Assignment.findAll({ where: {courseId: courseId}})
-  res.status(200).json({
-    results: courseAssignments
-  })
-});
-
-/*
  * Route to fetch a list of the students enrolled in the Course.
  * Returns a list containing the User IDs of all
  * students currently enrolled in the Course. 
@@ -150,12 +139,14 @@ router.get('/:id/assignments', async function (req, res) {
  * instructorId of the Course can fetch the list of 
  * enrolled students.
  */
-router.get('/:id/students', async function (req, res) {
-  const courseId = req.params.id
-  const courseStudents = await Course.findAll({ where: {courseId: courseId}})
-  res.status(200).json({
-    students: courseStudents
-  })
+router.get('/:id/students', requireAuthentication, async function (req, res) {
+  if (req.role == 'admin' || req.user == instructor.id) {
+    const courseId = req.params.id
+    const courseStudents = await Course.findAll({ where: {courseId: courseId}})
+    res.status(200).json({
+      students: courseStudents
+    })
+  }
 });
 
 /*
@@ -165,18 +156,20 @@ router.get('/:id/students', async function (req, res) {
  * 'instructor' User whose ID matches the instructorId of the Course 
  * can update the students enrolled in the Course.
  */
-router.post('/:id/students', async function (req, res) {
-  try {
-    const userId = req.params.id
-    const course = await Course.create(req.body, CourseClientFields)
-    res.status(200).send({ id: userId, add: req.body.add, remove: req.body.remove })
-  } catch (e) {
-    if (e instanceof ValidationError) {
-      res.status(400).send({ error: e.message })
-    } else {
-      throw e
+router.post('/:id/students', requireAuthentication, async function (req, res) {
+  if (req.role == 'admin' || req.user == instructor.id) {
+    try {
+      const userId = req.params.id
+      const course = await Course.create(req.body, CourseClientFields)
+      res.status(200).send({ id: userId, add: req.body.add, remove: req.body.remove })
+    } catch (e) {
+      if (e instanceof ValidationError) {
+        res.status(400).send({ error: e.message })
+      } else {
+        throw e
+      }
     }
-  }
+  };
 });
 
 /*
@@ -188,10 +181,25 @@ router.post('/:id/students', async function (req, res) {
  * instructorId of the Course can fetch the course roster.
  */
 router.get('/:id/roster', async function (req, res) {
+  if (req.role == 'admin' || req.user == instructor.id) {
+    const courseId = req.params.id
+    const courseRoster = await Course.findAll({ where: {courseId: courseId}})
+    res.status(200).json({
+      roster: courseRoster
+    })
+  }
+});
+
+/*
+ * Route to fetch a list of the Assignments for the Course.
+ * Returns a list containing the Assignment IDs of all
+ * Assignments for the Course.
+ */
+router.get('/:id/assignments', async function (req, res) {
   const courseId = req.params.id
-  const courseRoster = await Course.findAll({ where: {courseId: courseId}})
+  const courseAssignments = await Assignment.findAll({ where: {courseId: courseId}})
   res.status(200).json({
-    roster: courseRoster
+    results: courseAssignments
   })
 });
 
