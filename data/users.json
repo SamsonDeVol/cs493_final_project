@@ -3,63 +3,63 @@
         "id": 1,
         "name": "def not a cat",
         "email": "imahuman@gmail.com",
-        "password": "meow",
+        "password": "$2a$08$6mzI13acfpovjYWZDO/I0eU46s.R2S7a/kSlyTqJ8p.T38PaZM.5e",
         "role": "admin"
     },
     {
         "id": 2,
         "name": "Missy Meow",
         "email": "missycat@gmail.com",
-        "password": "meow",
+        "password": "$2a$08$6mzI13acfpovjYWZDO/I0eU46s.R2S7a/kSlyTqJ8p.T38PaZM.5e",
         "role": "instructor"
     },
     {
         "id": 3,
         "name": "Sammy Cat",
         "email": "samcat@gmail.com",
-        "password": "meow",
+        "password": "$2a$08$6mzI13acfpovjYWZDO/I0eU46s.R2S7a/kSlyTqJ8p.T38PaZM.5e",
         "role": "instructor"
     },
     {
         "id": 4,
         "name": "Ian Calico",
         "email": "iancat@gmail.com",
-        "password": "meow",
+        "password": "$2a$08$6mzI13acfpovjYWZDO/I0eU46s.R2S7a/kSlyTqJ8p.T38PaZM.5e",
         "role": "instructor"
     },
     {
         "id": 5,
         "name": "Jonah Tabby",
         "email": "jonahcat@gmail.com",
-        "password": "meow",
+        "password": "$2a$08$6mzI13acfpovjYWZDO/I0eU46s.R2S7a/kSlyTqJ8p.T38PaZM.5e",
         "role": "instructor"
     },
     {
         "id": 6,
         "name": "Siamese Cat",
         "email": "student1@gmail.com",
-        "password": "meow",
+        "password": "$2a$08$6mzI13acfpovjYWZDO/I0eU46s.R2S7a/kSlyTqJ8p.T38PaZM.5e",
         "role": "student"
     },
     {
         "id": 7,
         "name": "Persian Cat",
         "email": "student2@gmail.com",
-        "password": "meow",
+        "password": "$2a$08$6mzI13acfpovjYWZDO/I0eU46s.R2S7a/kSlyTqJ8p.T38PaZM.5e",
         "role": "student"
     },
     {
         "id": 8,
         "name": "Scottish Fold Cat",
         "email": "student3@gmail.com",
-        "password": "meow",
+        "password": "$2a$08$6mzI13acfpovjYWZDO/I0eU46s.R2S7a/kSlyTqJ8p.T38PaZM.5e",
         "role": "student"
     },
     {
         "id": 9,
         "name": "Bengal Cat",
         "email": "student4@gmail.com",
-        "password": "meow",
+        "password": "$2a$08$6mzI13acfpovjYWZDO/I0eU46s.R2S7a/kSlyTqJ8p.T38PaZM.5e",
         "role": "student"
     }
 ]
