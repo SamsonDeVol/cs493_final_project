@@ -2,10 +2,10 @@ const router = require('express').Router();
 
 
 const { ValidationError } = require('sequelize');
-const { validateAgainstSchema } = require('../lib/validation');
 const { Course, CourseClientFields } = require('../models/course');
 const { User } = require('../models/user');
 const { Assignment } = require('../models/assignment');
+const { requireAuthentication } = require("../lib/auth");
 
 /* 
  * Route to return a list of all Courses.
@@ -179,34 +179,20 @@ router.post('/:id/students', async function (req, res) {
   }
 });
 
-// /*
-//  * Route to fetch a CSV file containing list of the students enrolled in the Course.
-//  * Returns a CSV file containing information about all of the students
-//  * currently enrolled in the Course, including names, IDs, and 
-//  * email addresses. Only an authenticated User with 'admin' role 
-//  * or an authenticated 'instructor' User whose ID matches the 
-//  * instructorId of the Course can fetch the course roster.
-//  */
-// router.get('/:id/roster', async function (req, res) {
-//   const userId = req.params.userId
-//   const userCourses = await Course.findAll({ where: {userId: userId}})
-//   res.status(200).json({
-//     students: userCourses
-//   })
-// });
-
-// /*
-//  * Route to fetch a list of the Assignments for the Course.
-//  * Returns a list containing the Assignment IDs of all
-//  * Assignments for the Course.
-//  */
-// router.get('/:id/assignments', async function (req, res) {
-//   const userId = req.params.userId
-//   const userCourses = await Course.findAll({ where: {userId: userId}})
-//   res.status(200).json({
-//     students: userCourses
-//   })
-// });
-
+/*
+ * Route to fetch a CSV file containing list of the students enrolled in the Course.
+ * Returns a CSV file containing information about all of the students
+ * currently enrolled in the Course, including names, IDs, and 
+ * email addresses. Only an authenticated User with 'admin' role 
+ * or an authenticated 'instructor' User whose ID matches the 
+ * instructorId of the Course can fetch the course roster.
+ */
+router.get('/:id/roster', async function (req, res) {
+  const courseId = req.params.id
+  const courseRoster = await Course.findAll({ where: {courseId: courseId}})
+  res.status(200).json({
+    roster: courseRoster
+  })
+});
 
 module.exports = router;
