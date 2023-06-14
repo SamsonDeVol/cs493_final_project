@@ -70,7 +70,7 @@ router.post('/', async function (req, res) {
 });
 
 /*
- * Route to fetch info about a specific business.
+ * Route to fetch data about a specific course.
  * Returns summary data about the Course, excluding the list of
  * students enrolled in the course and the list of Assignments for the course.
  */
@@ -85,7 +85,7 @@ router.get('/:id', async function (req, res, next) {
 });
 
 /*
- * Route to update a course.
+ * Route to update data for a specific course.
  * Performs a partial update on the data for the Course.
  * Note that enrolled students and assignments cannot be modified
  * via this endpoint. Only an authenticated User with 'admin' role 
@@ -106,7 +106,7 @@ router.patch('/:id', async function (req, res, next) {
 });
 
 /*
- * Route to delete a business.
+ * Route to remove a specific Course from the database.
  * Completely removes the data for the specified Course,
  * including all enrolled students, all Assignments, etc.
  * Only an authenticated User with 'admin' role can remove a Course.
@@ -128,7 +128,7 @@ router.delete('/:id', async function (req, res, next) {
 });
 
 /*
- * GET /courses/{id}/students
+ * Route to fetch a list of the students enrolled in the Course.
  * Returns a list containing the User IDs of all
  * students currently enrolled in the Course. 
  * Only an authenticated User with 'admin' role or an 
@@ -144,55 +144,49 @@ router.get('/:id/students', async function (req, res) {
   })
 });
 
+// /*
+//  * Route to update enrollment for a Course.
+//  * Enrolls and/or unenrolls students from a Course. 
+//  * Only an authenticated User with 'admin' role or an authenticated 
+//  * 'instructor' User whose ID matches the instructorId of the Course 
+//  * can update the students enrolled in the Course.
+//  */
+// router.post('/:id/students', async function (req, res) {
+//   const userId = req.params.userId
+//   const userCourses = await Course.findAll({ where: {userId: userId}})
+//   res.status(200).json({
+//     students: userCourses
+//   })
+// });
+
+// /*
+//  * Route to fetch a CSV file containing list of the students enrolled in the Course.
+//  * Returns a CSV file containing information about all of the students
+//  * currently enrolled in the Course, including names, IDs, and 
+//  * email addresses. Only an authenticated User with 'admin' role 
+//  * or an authenticated 'instructor' User whose ID matches the 
+//  * instructorId of the Course can fetch the course roster.
+//  */
+// router.get('/:id/roster', async function (req, res) {
+//   const userId = req.params.userId
+//   const userCourses = await Course.findAll({ where: {userId: userId}})
+//   res.status(200).json({
+//     students: userCourses
+//   })
+// });
+
+// /*
+//  * Route to fetch a list of the Assignments for the Course.
+//  * Returns a list containing the Assignment IDs of all
+//  * Assignments for the Course.
+//  */
+// router.get('/:id/assignments', async function (req, res) {
+//   const userId = req.params.userId
+//   const userCourses = await Course.findAll({ where: {userId: userId}})
+//   res.status(200).json({
+//     students: userCourses
+//   })
+// });
+
 
 module.exports = router;
-
-
-// // Route to create business table. 
-// router.post('/createBusinessesTable', async (req, res) => {
-//   try {
-//     await createBusinessesTable()
-//     res.status(200).send({})
-//   } catch (err) {
-//     res.status(500).json({
-//       error: "Error creating businesses table (may already exist)"
-//     })
-//   }
-// })
-
-// // Route to fetch info about a specific business. 
-// router.get('/:businessid', async (req, res, next) => {
-//   try {
-//     const business = await getBusinessById(req.params.businessid)
-//     res.status(200).json(business)
-//   } catch {
-//     next()
-//   }
-// })
-
-// // Route to replace data for a business.
-// router.put('/:businessid', async function (req, res, next) {
-//   if (validateAgainstSchema(req.body, businessSchema)) {
-//     try {
-//       const updateSucessful = await updateBusinessById(req.params.businessid, req.body)
-//       if (updateSucessful) {
-//         res.status(200).send({
-//           id: req.params.businessid,
-//           links: {
-//             business: `/businesses/${req.params.businessid}`
-//           }})
-//       } else {
-//         next()
-//       }
-//     } catch (err) {
-//       res.status(500).json({
-//         error: "Unable to update business"
-//       })
-//     }
-//   } else {
-//     res.status(400).json({
-//       error: "Request body is not a valid business object"
-//     })
-//   }
-  
-// })
