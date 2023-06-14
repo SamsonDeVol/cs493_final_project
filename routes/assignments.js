@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const multer = require('multer');
 const upload = multer({storage: multer.memoryStorage()});
-
+const { ValidationError } = require('sequelize')
 const { Assignment, AssignmentClientFields } = require('../models/assignment')
 const { Submission, SubmissionClientFields } = require('../models/submission')
 
@@ -32,12 +32,12 @@ router.post('/', async function (req, res, next) {
 /*
  *  Fetch data about a specific Assignment.
  */
-router.get('/id', async function (req, res) {
-  const assignment = await Assignment.findByPk(id)
+router.get('/:id', async function (req, res) {
+  const assignment = await Assignment.findByPk(req.params.id)
   if (assignment) {
     res.status(200).send(assignment)
   } else {
-    next()
+    res.status(404).json({"status": "not found"})
   }
 
 })
@@ -45,30 +45,40 @@ router.get('/id', async function (req, res) {
 /*
  *  Update data for a specific Assignment.
  */
-router.patch('/id', async function (req, res) {
-  const assignmentId = req.params.assignmentId
-  const result = await Assignment.update(req.body, {
+router.patch('/:id', async function (req, res) {
+  const assignmentId = req.params.id
+  try {  
+    const result = await Assignment.update(req.body, {
     where: { id: assignmentId },
     fields: AssignmentClientFields
-  })
-  if (result[0] > 0) {
-    res.status(204).send()
-  } else {
-    next()
+    })
+    if (result[0] > 0) {
+      res.status(200).json({"status": "okay"})
+    } else {
+      res.status(500).send("status error")
+    }
+  } catch (err) {
+    res.status(500).send(err)
   }
+
 })
 
 /*
  *  Remove a specific Assignment from the database.
  */
-router.delete('/{id}', async function (req, res) {
-  const assignmentId = req.params.assignmentId
-  const result = await Assignment.destroy({ where: { id: assignmentId }})
-  if (result > 0) {
-    res.status(204).send()
-  } else {
-    next()
+router.delete('/:id', async function (req, res) {
+  const assignmentId = req.params.id
+  try {
+    const result = await Assignment.destroy({ where: { id: assignmentId }})
+    if (result > 0) {
+      res.status(204).send()
+    } else {
+      res.status(500).send("status error")
+    }
+  } catch (err) {
+    res.status(500).send(err)
   }
+  
 })
 
 /*
