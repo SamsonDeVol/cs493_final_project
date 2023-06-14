@@ -76,9 +76,7 @@ router.post('/', async function (req, res) {
  */
 router.get('/:id', async function (req, res, next) {
   const id = req.params.id
-  const course = await course.findByPk(id, {
-    // include: [ Photo, Review ]
-  })
+  const course = await course.findByPk(id)
   if (course) {
     res.status(200).send(course)
   } else {
@@ -115,7 +113,7 @@ router.patch('/:id', async function (req, res, next) {
  */
 router.delete('/:id', async function (req, res, next) {
   const id = req.params.id
-  const result = await Course.destroy({ where: { id: id}})
+  const result = await Course.destroy({ where: { id: id }})
   if (req.user !== req.params.id) {
     res.status(403).json({
       error: "Unauthorized to access the specified resource"
@@ -128,6 +126,24 @@ router.delete('/:id', async function (req, res, next) {
     }
   }
 });
+
+/*
+ * GET /courses/{id}/students
+ * Returns a list containing the User IDs of all
+ * students currently enrolled in the Course. 
+ * Only an authenticated User with 'admin' role or an 
+ * authenticated 'instructor' User whose ID matches the 
+ * instructorId of the Course can fetch the list of 
+ * enrolled students.
+ */
+router.get('/:id/students', async function (req, res) {
+  const userId = req.params.userId
+  const userCourses = await Course.findAll({ where: {userId: userId}})
+  res.status(200).json({
+    students: userCourses
+  })
+});
+
 
 module.exports = router;
 
