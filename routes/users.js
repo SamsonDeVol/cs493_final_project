@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 
 const { generateAuthToken, validateUser, hashAndSaltPassword, requireAuthentication } = require('../lib/auth')
 const { User, UserClientFields } = require('../models/user');
-const { Course, CourseClientFields } = require('../models/course');
+const { Course, CourseUsers, CourseClientFields } = require('../models/course');
 
 
 /* POST - create a new user */
@@ -106,12 +106,12 @@ router.get('/:id', requireAuthentication, async function(req, res) {
       } else if (user.role === 'student') {
         
         // If the User has the 'student' role, the response should include a list of the IDs of the Courses the User is enrolled in.
-        const coursesTaken = [1, 2, 3, 4]
+        const coursesTaken = await CourseUsers.findAll({ where: { userId: id } })
         res.status(200).send ({
           "name": user.name,
           "email": user.email,
           "role": user.role,
-          "courses": coursesTaken 
+          "courses": coursesTaken.map(course => course.courseId) 
         })
       } else {
         res.status(200).send({
