@@ -14,6 +14,12 @@ const Course = sequelize.define('course', {
 })
 exports.Course = Course
 
+const CourseUsers = sequelize.define('courseUsers', {
+  courseId: { type: DataTypes.INTEGER, allowNull: false },
+  userId: { type: DataTypes.INTEGER, allowNull: false }
+})
+exports.CourseUsers = CourseUsers
+
 /*
 * Set up one-to-many relationship between Course and Assignment.
 */
@@ -23,8 +29,8 @@ Assignment.belongsTo(Course)
 /*
 * Set up many-to-many relationship between Course and User for the Students.
 */
-Course.belongsToMany(User, { through: 'courseUsers' })
-User.belongsToMany(Course, { through: 'courseUsers' })
+Course.belongsToMany(User, { through: CourseUsers })
+User.belongsToMany(Course, { through: CourseUsers })
 
 /*
 * Set up a one-to-many relationship between Course and User for the Instructor.

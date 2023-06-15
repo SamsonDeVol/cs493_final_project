@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 
 const { ValidationError } = require('sequelize');
-const { Course, CourseClientFields } = require('../models/course');
+const { Course, CourseUsers, CourseClientFields } = require('../models/course');
 const { User } = require('../models/user');
 const { Assignment } = require('../models/assignment');
 const { requireAuthentication } = require("../lib/auth");
@@ -60,7 +60,7 @@ router.get('/', async function(req, res) {
 router.post('/', requireAuthentication, async function (req, res) {
   try {
     const course = await Course.create(req.body, CourseClientFields)
-    res.status(201).send({ id: id })
+    res.status(201).send({ id: course.id })
   } catch (e) {
     if (e instanceof ValidationError) {
       res.status(400).send({ error: e.message })
@@ -140,12 +140,24 @@ router.delete('/:id', requireAuthentication, async function (req, res, next) {
  * enrolled students.
  */
 router.get('/:id/students', requireAuthentication, async function (req, res) {
+  const course = await Course.findByPk(req.params.id)
+  if (!course.instructorId) {
+    res.status(404).send("specified course not found")
+  }
+  const instructor = await User.findByPk(course.instructorId)
   if (req.role == 'admin' || req.user == instructor.id) {
     const courseId = req.params.id
-    const courseStudents = await Course.findAll({ where: {courseId: courseId}})
+    const courseStudents = await CourseUsers.findAll({ where: {courseId: courseId}})
+    
+    const studentList = await Promise.all(courseStudents.map(async (student) => {
+      const user = await User.findByPk(student.userId)
+      return await user.name
+    }))
     res.status(200).json({
-      students: courseStudents
+      students: studentList
     })
+  } else {
+    res.status(403).send("request made by unauthorized user")
   }
 });
 
@@ -157,19 +169,26 @@ router.get('/:id/students', requireAuthentication, async function (req, res) {
  * can update the students enrolled in the Course.
  */
 router.post('/:id/students', requireAuthentication, async function (req, res) {
-  if (req.role == 'admin' || req.user == instructor.id) {
-    try {
-      const userId = req.params.id
-      const course = await Course.create(req.body, CourseClientFields)
-      res.status(200).send({ id: userId, add: req.body.add, remove: req.body.remove })
-    } catch (e) {
-      if (e instanceof ValidationError) {
-        res.status(400).send({ error: e.message })
-      } else {
-        throw e
-      }
+  const course = await Course.findByPk(req.params.id)
+  if (!course.instructorId) {
+    res.status(404).send("specified course not found")
+  }
+  try {
+    const instructor = await User.findByPk(course.instructorId)
+    if (req.role == 'admin' || req.user == instructor.id) {
+      req.body.add.map(async (userId) => {
+        CourseUsers.create({userId: userId, courseId: req.params.id})
+      });
+      req.body.remove.map(async (userId) => {
+        CourseUsers.destroy({ where: {userId: userId, courseId: req.params.id} })
+      });
+      res.status(200).send({ added: req.body.add, removed: req.body.remove, courseId: req.params.id })
+    } else {
+      res.status(403).send("request made by unauthorized user")
     }
-  };
+  } catch (e) {
+    res.status(400).send( "The request body was either not present or did not contain the fields required")
+  }
 });
 
 /*
