@@ -14,7 +14,7 @@ const Course = sequelize.define('course', {
 })
 exports.Course = Course
 
-const CourseUsers = sequelize.define(CourseUsers, {
+const CourseUsers = sequelize.define('courseUsers', {
   courseId: { type: DataTypes.INTEGER, allowNull: false },
   userId: { type: DataTypes.INTEGER, allowNull: false }
 })
