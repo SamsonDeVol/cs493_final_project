@@ -77,7 +77,7 @@ router.post('/', requireAuthentication, async function (req, res) {
  */
 router.get('/:id', async function (req, res, next) {
   const id = req.params.id
-  const course = await course.findByPk(id)
+  const course = await Course.findByPk(id)
   if (course) {
     res.status(200).send(course)
   } else {
